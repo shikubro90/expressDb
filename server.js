@@ -18,13 +18,19 @@ app.use(cors());
 
 //run server
 
-mongoose
+const client = mongoose
   .connect(process.env.DATABASE)
   .then(() => console.log("DB connected"))
   .catch((err) => console.log("DB err", err));
 
+
+
 const port = process.env.PORT || 8000;
+
+readdirSync("./routes").map(r=>app.use("/api/v1",require(`./routes/${r}`)));
 
 app.listen(port, () => {
   console.log(`App is running on port ${port}`);
 });
+
+module.exports = {client};
